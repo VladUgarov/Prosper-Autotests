@@ -1,6 +1,6 @@
 const {Builder, By, Key, until} = require('selenium-webdriver');
 let chrome = require('selenium-webdriver/chrome');
-let {connectMetamask, sleep} = require('./connectMetamask')
+let {connectMetamask, connectMetamaskToProsper, sleep} = require('./functionHelps')
 let driver;
 let options;
 
@@ -52,6 +52,7 @@ describe('HeaderNavigateMenu', function (){
     await driver.findElement(By.xpath("//a[text()='Information']")).click();
     let tables = await driver.getAllWindowHandles();
     await driver.switchTo().window(tables[1]);
+    sleep(2000)
     await driver.wait(until.elementLocated(By.xpath("//strong[text()='Rules']")),15000);
     let h2 =  await driver.findElement(By.xpath("//strong[text()='Rules']")).getText()
     await expect(h2).toEqual('Rules')
@@ -74,6 +75,7 @@ describe('HeaderNavigateMenu', function (){
     let h2 =  await driver.findElement(By.xpath('//*[@id="root"]/div/div[2]/div/div[1]/h2')).getText()
     await expect(h2).toEqual('Who are you today?')
   },10000)
+
 })
 
 describe('HeaderConnectMetamask', function (){
@@ -110,6 +112,7 @@ describe('HeaderChangeLanguage', function (){
     options = new chrome.Options;
     options.addArguments("--lang=en");
     driver = await new Builder().forBrowser('chrome').setChromeOptions(options).build();
+    await driver.manage().window().maximize();
     await driver.get('https://platform.prosper.so/');
     await driver.wait(until.elementLocated(By.id('openLanguageMenu')),15000)
   },10000)
@@ -126,4 +129,22 @@ describe('HeaderChangeLanguage', function (){
     let h2 =  await driver.findElement(By.xpath('//*[@id="root"]/div/div[2]/div/div[1]/h2')).getText()
     await expect(h2).toEqual('Кто ты сегодня?')
   },10000)
+})
+
+describe('HeaderBalanceBNB', function (){
+  beforeEach(async function (){
+    driver = await connectMetamaskToProsper()
+  },50000)
+
+  afterEach(async function (){
+    await driver.quit()
+  },10000)
+
+  test('BalanceBNB', async function (){
+    let tables = await driver.getAllWindowHandles();
+    let resultPros = await driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div/div/div[3]/div/div[1]/div/div[2]/div/div[2]/span")).getText();
+    await driver.switchTo().window(tables[0]);
+    let resultMeta = await driver.findElement(By.xpath("//*[@id='app-content']/div/div[3]/div/div/div/div[2]/div/div[1]/div/div/div/div/div/span[1]")).getText();
+    await expect(resultPros).toEqual(resultMeta)
+  },20000)
 })
