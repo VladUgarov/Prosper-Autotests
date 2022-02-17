@@ -7,10 +7,11 @@ let options = new chrome.Options;
 options.addArguments("--lang=en");
 options.addExtensions('metamask.crx');
 
-async function functionHelps() {
+async function connectMetamask() {
   driver = await new Builder().forBrowser('chrome').setChromeOptions(options).build();
   await driver.manage().window().maximize();
   await driver.get('https://platform.prosper.so/');
+  sleep(1000)
   let tables = await driver.getAllWindowHandles();
   await driver.switchTo().window(tables[0]);
   await driver.wait(until.elementLocated(By.xpath('//button[text()="Get Started"]')), 15000);
@@ -35,7 +36,7 @@ async function functionHelps() {
 }
 
 async function connectMetamaskToProsper() {
-  driver = await functionHelps()
+  driver = await connectMetamask()
   let tables = await driver.getAllWindowHandles();
   await driver.switchTo().window(tables[1]);
   sleep(2000)
@@ -59,26 +60,26 @@ function sleep(milliseconds) {
   } while (currentDate - date < milliseconds);
 }
 
-function visible(y,x) {
-  let targetPosition = {
-    y: y,
-    x: x
-  }
-  let windowPosition = {
-    y: window.pageYOffset,
-    x: window.pageXOffset,
-  };
+// function visible(y,x) {
+//   let targetPosition = {
+//     y: y,
+//     x: x
+//   }
+//   let windowPosition = {
+//     y: window.pageYOffset,
+//     x: window.pageXOffset,
+//   };
+//
+//   if (targetPosition.bottom > windowPosition.y && // Если позиция нижней части элемента больше позиции верхней чайти окна, то элемент виден сверху
+//     targetPosition.y < windowPosition.bottom && // Если позиция верхней части элемента меньше позиции нижней чайти окна, то элемент виден снизу
+//     targetPosition.right > windowPosition.x && // Если позиция правой стороны элемента больше позиции левой части окна, то элемент виден слева
+//     targetPosition.x < windowPosition.right) { // Если позиция левой стороны элемента меньше позиции правой чайти окна, то элемент виден справа
+//     // Если элемент полностью видно, то запускаем следующий код
+//     return true
+//   } else {
+//     return false
+//   };
+//
+// }
 
-  if (targetPosition.bottom > windowPosition.y && // Если позиция нижней части элемента больше позиции верхней чайти окна, то элемент виден сверху
-    targetPosition.y < windowPosition.bottom && // Если позиция верхней части элемента меньше позиции нижней чайти окна, то элемент виден снизу
-    targetPosition.right > windowPosition.x && // Если позиция правой стороны элемента больше позиции левой части окна, то элемент виден слева
-    targetPosition.x < windowPosition.right) { // Если позиция левой стороны элемента меньше позиции правой чайти окна, то элемент виден справа
-    // Если элемент полностью видно, то запускаем следующий код
-    return true
-  } else {
-    return false
-  };
-
-}
-
-module.exports = {connectMetamask: functionHelps, connectMetamaskToProsper, sleep, visible}
+module.exports = {connectMetamask, connectMetamaskToProsper, sleep}

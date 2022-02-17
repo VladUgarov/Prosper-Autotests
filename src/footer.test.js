@@ -11,6 +11,7 @@ describe('FooterNavigateMenu', function (){
     driver = await new Builder().forBrowser('chrome').setChromeOptions(options).build();
     await driver.manage().window().maximize();
     await driver.get('https://platform.prosper.so/');
+    sleep(1000)
     await driver.wait(until.elementLocated(By.xpath("//*[@id='root']/div/footer/div[2]/div/span[1]")),15000)
   },10000)
 

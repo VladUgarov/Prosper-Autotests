@@ -11,6 +11,7 @@ describe('HeaderNavigateMenu', function (){
     driver = await new Builder().forBrowser('chrome').setChromeOptions(options).build();
     await driver.manage().window().maximize();
     await driver.get('https://platform.prosper.so/');
+    sleep(1000)
     await driver.wait(until.elementLocated(By.id('openLanguageMenu')),15000)
   },10000)
 
