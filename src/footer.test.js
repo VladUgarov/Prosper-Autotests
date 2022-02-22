@@ -1,6 +1,6 @@
 const {Builder, By, Key, until} = require('selenium-webdriver');
 let chrome = require('selenium-webdriver/chrome');
-let {connectMetamask, connectMetamaskToProsper, sleep, visible} = require('./functionHelps')
+let {connectMetamask, connectMetamaskToProsper, sleep, visible} = require('../functionHelps')
 let driver;
 let options;
 
